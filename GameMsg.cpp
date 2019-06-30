@@ -46,4 +46,16 @@ std::string GameMsg::serialize()
 
 GameMsg::~GameMsg()
 {
+	delete pMsg;
+}
+
+MultiMsg::~MultiMsg()
+{
+	list<GameMsg*>::iterator ite;
+	
+	for (ite=m_Msgs.begin();ite!=m_Msgs.end();++ite)
+	{
+		delete (*ite);
+		ite = m_Msgs.erase(ite);
+	}
 }

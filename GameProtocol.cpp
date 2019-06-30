@@ -9,7 +9,11 @@
 using namespace std;
 GameProtocol::GameProtocol(){}
 
-GameProtocol::~GameProtocol(){}
+GameProtocol::~GameProtocol()
+{
+	/*delete m_role;
+	delete m_channel;*/
+}
 
 UserData* GameProtocol::raw2request(std::string _szInput)
 {
@@ -83,7 +87,7 @@ std::string* GameProtocol::response2raw(UserData& _oUserData)
 
 Irole* GameProtocol::GetMsgProcessor(UserDataMsg& _oUserDataMsg)
 {
-	return nullptr;
+	return m_role;
 }
 
 Ichannel* GameProtocol::GetMsgSender(BytesMsg& _oBytes)

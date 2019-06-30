@@ -2,6 +2,7 @@
 #include <zinx.h>
 #include <stdlib.h>
 #include <string>
+#include "GameRole.h"
 #include "GameChannel.h"
 using namespace std;
 class GameChannel;
@@ -10,6 +11,7 @@ class GameProtocol:public Iprotocol
 	std::string  szlast;
 public:
 	GameChannel* m_channel = NULL;
+	GameRole* m_role = NULL;
 	GameProtocol();
 	virtual~GameProtocol();
 	// Í¨¹ý Iprotocol ¼Ì³Ð
