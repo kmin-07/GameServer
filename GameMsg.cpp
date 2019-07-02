@@ -7,7 +7,7 @@ GameMsg::GameMsg(MSG_TYPE _type, google::protobuf::Message* _pMsg) :enMsgType(_t
 	
 }
 
-GameMsg::GameMsg(MSG_TYPE _type, std::string _stream)
+GameMsg::GameMsg(MSG_TYPE _type, std::string _stream): enMsgType(_type)
 {
 	switch (_type)
 	{
@@ -46,16 +46,16 @@ std::string GameMsg::serialize()
 
 GameMsg::~GameMsg()
 {
-	delete pMsg;
+	//delete pMsg;
 }
 
 MultiMsg::~MultiMsg()
 {
-	list<GameMsg*>::iterator ite;
+	/*list<GameMsg*>::iterator ite;
 	
 	for (ite=m_Msgs.begin();ite!=m_Msgs.end();++ite)
 	{
 		delete (*ite);
 		ite = m_Msgs.erase(ite);
-	}
+	}*/
 }
