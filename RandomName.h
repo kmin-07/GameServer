@@ -1,19 +1,24 @@
 #pragma once
 #include <list>
 #include <string>
+#include <vector>
 using namespace std;
 
-class FirstNmae
+class FirstName
 {
 public:
 	string m_first;
-	list<string>m_last_list;
+	vector<string>m_last_list;
 };
 class RandomName
 {
-	list<FirstNmae*>m_pool;
+	vector<FirstName *>m_pool;
 public:
+	RandomName();
+	string GetName();
+	void Release(string _name);
 	void LoadFile();
+	virtual~RandomName();
 
 };
 

@@ -6,6 +6,7 @@
 #include "GameChannel.h"
 using namespace std;
 class GameChannel;
+class GameRole;
 class GameProtocol:public Iprotocol
 {
 	std::string  szlast;

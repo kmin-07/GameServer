@@ -18,7 +18,7 @@ public:
 	virtual bool WriteFd(std::string & _output) override;
 	virtual void Fini() override;
 	virtual int GetFd() override;
-	virtual std::string GetChannelInfo() override;
+	virtual std::string GetChannelInfo() oveide;
 	virtual AZinxHandler * GetInputNextStage(BytesMsg & _oInput) override;
 };
 

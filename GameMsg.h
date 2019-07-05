@@ -8,7 +8,7 @@ class GameMsg:public UserData
 	google::protobuf::Message* pMsg = NULL;
 	enum MSG_TYPE
 	{
-		MSG_TYPE_LOGIN_ID_NAME=1,
+		MSG_TYPE_LOGIN_ID_NAME = 1,
 		MSG_TYPE_CHAT_CONTENT = 2,
 		MSG_TYPE_NEW_POSTION = 3,
 		MSG_TYPE_BROADCAST = 200,

@@ -103,7 +103,8 @@
       <CppLanguageStandard>gnu++11</CppLanguageStandard>
     </ClCompile>
     <Link>
-      <LibraryDependencies>zinx;protobuf;pthread</LibraryDependencies>
+      <LibraryDependencies>zinx;protobuf;pthread;hiredis</LibraryDependencies>
+      <AdditionalOptions>-L/usr/local/lib</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

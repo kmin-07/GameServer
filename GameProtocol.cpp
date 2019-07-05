@@ -11,8 +11,11 @@ GameProtocol::GameProtocol(){}
 
 GameProtocol::~GameProtocol()
 {
-	/*delete m_role;
-	delete m_channel;*/
+	if (NULL!=m_role)
+	{
+		ZinxKernel::Zinx_Del_Role(*m_role);
+		delete m_role;
+	}
 }
 
 UserData* GameProtocol::raw2request(std::string _szInput)

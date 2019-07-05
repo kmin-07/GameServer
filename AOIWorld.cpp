@@ -28,45 +28,47 @@ std::list<Player*> AOIWorld::GetSrdPlayers(Player* _player)
 	list<Player*>cur_play = m_grid[grid_id].m_players;
 	ret.insert(ret.begin(), cur_play.begin(), cur_play.end());
 	
-	if (x_index>0&&y_index>0)
+	if (x_index > 0 && y_index > 0)
 	{
-		list<Player*>cur_play=m_grid[grid_id-1-x_count].m_players;
-		ret.insert(ret.begin(), cur_play.begin(), cur_play.end());
+		list<Player*>& cur_list = m_grid[grid_id - 1 - x_count].m_players;
+		ret.insert(ret.begin(), cur_list.begin(), cur_list.end());
 	}
-	if (x_index >0)
+	if (y_index > 0)
 	{
-		list<Player*>cur_play = m_grid[grid_id - 1].m_players;
-		ret.insert(ret.begin(), cur_play.begin(), cur_play.end());
+		list<Player*>& cur_list = m_grid[grid_id - x_count].m_players;
+		ret.insert(ret.begin(), cur_list.begin(), cur_list.end());
 	}
-	if ( y_index <y_count-1&&x_index>0)
+	if (x_index < x_count - 1 && y_index > 0)
 	{
-		list<Player*>cur_play = m_grid[grid_id - 1 + x_count].m_players;
-		ret.insert(ret.begin(), cur_play.begin(), cur_play.end());
+		list<Player*>& cur_list = m_grid[grid_id - x_count + 1].m_players;
+		ret.insert(ret.begin(), cur_list.begin(), cur_list.end());
 	}
-	if ( y_index > 0)
+	if (x_index > 0)
 	{
-		list<Player*>cur_play = m_grid[grid_id-x_count].m_players;
-		ret.insert(ret.begin(), cur_play.begin(), cur_play.end());
+		list<Player*>& cur_list = m_grid[grid_id - 1].m_players;
+		ret.insert(ret.begin(), cur_list.begin(), cur_list.end());
 	}
-	if (x_index <x_count-1 && y_index > 0)
-	{
-		list<Player*>cur_play = m_grid[grid_id + 1 - x_count].m_players;
-		ret.insert(ret.begin(), cur_play.begin(), cur_play.end());
-	}
+	list<Player*>& cur_list = m_grid[grid_id].m_players;
+	ret.insert(ret.begin(), cur_list.begin(), cur_list.end());
 	if (x_index < x_count - 1)
 	{
-		list<Player*>cur_play = m_grid[grid_id + 1].m_players;
-		ret.insert(ret.begin(), cur_play.begin(), cur_play.end());
+		list<Player*>& cur_list = m_grid[grid_id + 1].m_players;
+		ret.insert(ret.begin(), cur_list.begin(), cur_list.end());
 	}
-	if (x_index < x_count - 1 && y_index <y_count-1)
+	if (x_index > 0 && y_index < y_count - 1)
 	{
-		list<Player*>cur_play = m_grid[grid_id +1 +x_count].m_players;
-		ret.insert(ret.begin(), cur_play.begin(), cur_play.end());
+		list<Player*>& cur_list = m_grid[grid_id - 1 + x_count].m_players;
+		ret.insert(ret.begin(), cur_list.begin(), cur_list.end());
 	}
 	if (y_index < y_count - 1)
 	{
-		list<Player*>cur_play = m_grid[grid_id + x_count].m_players;
-		ret.insert(ret.begin(), cur_play.begin(), cur_play.end());
+		list<Player*>& cur_list = m_grid[grid_id + x_count].m_players;
+		ret.insert(ret.begin(), cur_list.begin(), cur_list.end());
+	}
+	if (x_index < x_count - 1 && y_index < y_count - 1)
+	{
+		list<Player*>& cur_list = m_grid[grid_id + 1 + x_count].m_players;
+		ret.insert(ret.begin(), cur_list.begin(), cur_list.end());
 	}
 	return ret;
 

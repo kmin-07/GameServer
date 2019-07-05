@@ -9,7 +9,11 @@
 #include "RandomName.h"
 #include "ZinxTimer.h"
 #include <algorithm>
+#include <hiredis/hiredis.h>
+
 using namespace std;
+
+RandomName random_name;
 
 static AOIWorld world(0,400, 0, 400, 20, 20);
 
@@ -25,7 +29,9 @@ GameMsg* GameRole::CreateIDNameLogin()
 GameMsg* GameRole::CreateSrdPlayers()
 {
 	pb::SyncPlayers* pMsg = new pb::SyncPlayers();
+
 	auto srd_list = world.GetSrdPlayers(this);
+
 	for (auto single:srd_list)
 	{
 		auto pPlayer = pMsg->add_ps();
@@ -38,7 +44,6 @@ GameMsg* GameRole::CreateSrdPlayers()
 		pPostion->set_y(pRole->y);
 		pPostion->set_z(pRole->z);
 		pPostion->set_v(pRole->v);
-
 	}
 	GameMsg* ptr = new GameMsg(GameMsg::MSG_TYPE_SRD_POSTION, pMsg);
 	return ptr;
@@ -85,9 +90,11 @@ GameMsg* GameRole::CreateTalkBroadCast(string text)
 static default_random_engine random_engine(time(NULL));
 GameRole::GameRole()
 {
-	szName = "TOM";
-	x = 100+random_engine()%50;
-	z = 100+random_engine()%50;C
+
+	
+	szName = random_name.GetName();
+	x = 100;//+random_engine()%50;
+	z = 100;//+random_engine()%50;
 	
 
 
@@ -95,6 +102,7 @@ GameRole::GameRole()
 
 GameRole::~GameRole()
 {
+	random_name.Release(szName);
 }
 class ExitTimer :public TimerOutProc
 {
@@ -134,6 +142,12 @@ bool GameRole::Init()
 			ZinxKernel::Zinx_SendOut(*pmsg, *(pRole->m_proto));
 		}
 	}
+	auto context = redisConnect("127.0.0.1", 6379);
+	if (context!=NULL)
+	{
+		freeReplyObject(redisCommand(context, "lpush game_name %s", szName.c_str()));
+		redisFree(context);
+	}
 	return bRet;
 }
 void GameRole::ProcTalkMsg(string _content)
@@ -149,6 +163,7 @@ void GameRole::ProcTalkMsg(string _content)
 
 void GameRole::ProcMoveMsg(float _x, float _y, float _z, float _v)
 {
+	
 	auto s1 = world.GetSrdPlayers(this);
 	world.DelPlayer(this);
 	x = _x;
@@ -187,7 +202,7 @@ void GameRole::ProcMoveMsg(float _x, float _y, float _z, float _v)
 		auto pRole = dynamic_cast<GameRole*>(single);
 		ZinxKernel::Zinx_SendOut(*(new GameMsg(GameMsg::MSG_TYPE_BROADCAST, pmsg)), *(pRole->m_proto));
 	}
-
+	
 }
 
 void GameRole::ViewAppear(GameRole* _pRole)
@@ -216,9 +231,7 @@ UserData* GameRole::ProcMsg(UserData& _poUserData)
 	{
 		cout << "type is" << single->enMsgType << endl;
 		cout << single->pMsg->Utf8DebugString() << endl;
-		
-		
-	
+
 		auto NewPos = dynamic_cast<pb::Position*>(single->pMsg);
 		switch(single->enMsgType)
 		{
@@ -227,6 +240,8 @@ UserData* GameRole::ProcMsg(UserData& _poUserData)
 			break;
 		case GameMsg::MSG_TYPE_NEW_POSTION:
 			ProcMoveMsg(NewPos->x(), NewPos->y(), NewPos->z(), NewPos->v());
+			break;
+		default:
 			break;
 		}	
 	}
@@ -250,6 +265,13 @@ void GameRole::Fini()
 	if (ZinxKernel::Zinx_GetAllRole().size()<=1)
 	{
 		TimerOutMng::GetInstance().AddTask(&g_exit_timer);
+	}
+
+	auto context = redisConnect("127.0.0.1", 6379);
+	if (context != NULL)
+	{
+		freeReplyObject(redisCommand(context, "lrem game_name 1 %s", szName.c_str()));
+		redisFree(context);
 	}
 }
 

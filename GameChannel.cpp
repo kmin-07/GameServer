@@ -6,7 +6,11 @@ GameChannel::GameChannel(int _fd):ZinxTcpData(_fd){}
 
 GameChannel::~GameChannel()
 {
-	//delete m_protocol;
+	if (NULL != m_protocol)
+	{
+		ZinxKernel::Zinx_Del_Proto(*m_protocol);
+		delete m_protocol;
+	}
 }
 
 AZinxHandler* GameChannel::GetInputNextStage(BytesMsg& _oInput)
